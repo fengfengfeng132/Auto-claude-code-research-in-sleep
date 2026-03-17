@@ -60,9 +60,10 @@ claude mcp add codex -s user -- codex mcp-server
 # 3. Use in Claude Code
 claude
 > /idea-discovery "your research direction"  # Workflow 1 — be specific! not "NLP" but "factorized gap in discrete diffusion LMs"
+> /experiment-bridge                         # Workflow 1.5 — have a plan? implement + deploy + collect results
 > /auto-review-loop "your paper topic or scope"  # Workflow 2: review → fix → re-review overnight
 > /paper-writing "NARRATIVE_REPORT.md"       # Workflow 3: narrative → polished PDF
-> /research-pipeline "your research direction"  # Full pipeline: Workflow 1 → 2 → 3 end-to-end
+> /research-pipeline "your research direction"  # Full pipeline: Workflow 1 → 1.5 → 2 → 3 end-to-end
 ```
 
 > 📝 **New to Workflow 3?** See [`docs/NARRATIVE_REPORT_EXAMPLE.md`](docs/NARRATIVE_REPORT_EXAMPLE.md) for a complete sample input — shows what claims, experiments, results, and figure descriptions to include for best results.
@@ -251,6 +252,24 @@ The output is a ranked `IDEA_REPORT.md` plus a refined proposal (`refine-logs/FI
 
 📝 **Blog post:** [Claude Code 两月 NeurIPS 指北](http://xhslink.com/o/7IvAJQ41IBA)
 
+### Workflow 1.5: Experiment Bridge 🔗
+
+> **"I have a plan. Now implement it, deploy it, and get me initial results."**
+
+Already have an experiment plan (from Workflow 1 or your own)? `/experiment-bridge` turns it into running code:
+
+1. 📋 **Parse** the experiment plan (`refine-logs/EXPERIMENT_PLAN.md`)
+2. 💻 **Implement** experiment scripts (reuse existing code, add proper argparse/logging/seeds)
+3. ✅ **Sanity check** — run the smallest experiment first to catch bugs early
+4. 🚀 **Deploy** full experiment suite to GPU via `/run-experiment`
+5. 📊 **Collect** initial results and update the experiment tracker
+
+**Skills involved:** `experiment-bridge` + `run-experiment` + `monitor-experiment`
+
+> 💡 **One-command shortcut:** `/experiment-bridge` reads `refine-logs/EXPERIMENT_PLAN.md` automatically. Or point it to any plan: `/experiment-bridge "my_plan.md"`.
+
+> ⚙️ `AUTO_DEPLOY`, `SANITY_FIRST`, `MAX_PARALLEL_RUNS` are configurable — see [Customization](#%EF%B8%8F-customization).
+
 ### Workflow 2: Auto Research Loop 🔁 (sleep & wake up to results)
 
 > **"Review my paper, fix what's wrong, repeat until it's good."**
@@ -423,7 +442,7 @@ After Workflow 3 generates the paper, `/auto-paper-improvement-loop` runs 2 roun
 
 | Skill | Description | Codex MCP? |
 |-------|-------------|:---:|
-| 🏗️ [`research-pipeline`](skills/research-pipeline/SKILL.md) | **End-to-end**: Workflow 1 → Workflow 2 → Workflow 3, from research direction to submission | Yes |
+| 🏗️ [`research-pipeline`](skills/research-pipeline/SKILL.md) | **End-to-end**: Workflow 1 → 1.5 → 2 → 3, from research direction to submission | Yes |
 
 ### 🔍 Workflow 1: Idea Discovery & Method Refinement
 

@@ -60,9 +60,10 @@ claude mcp add codex -s user -- codex mcp-server
 # 3. 在 Claude Code 中使用
 claude
 > /idea-discovery "你的研究方向"              # 工作流 1 — 方向要具体！不要 "NLP"，要 "离散扩散语言模型的 factorized gap"
+> /experiment-bridge                         # 工作流 1.5 — 有计划了？实现 + 部署 + 收结果
 > /auto-review-loop "你的论文主题或范围"         # 工作流 2：审稿 → 修复 → 再审，一夜完成
 > /paper-writing "NARRATIVE_REPORT.md"       # 工作流 3：研究叙事 → 精修 PDF
-> /research-pipeline "你的研究方向"            # 全流程：工作流 1 → 2 → 3 端到端
+> /research-pipeline "你的研究方向"            # 全流程：工作流 1 → 1.5 → 2 → 3 端到端
 ```
 
 > 📝 **第一次用工作流 3？** 参考 [`docs/NARRATIVE_REPORT_EXAMPLE.md`](docs/NARRATIVE_REPORT_EXAMPLE.md) 查看完整输入样本——展示了 claims、实验、结果、图表描述应包含哪些内容。
@@ -212,6 +213,24 @@ claude
 
 📝 **博客：** [Claude Code 两月 NeurIPS 指北](http://xhslink.com/o/7IvAJQ41IBA)
 
+### 工作流 1.5：实验桥接 🔗
+
+> "我有计划了，帮我实现代码、部署实验、拿到初始结果。"
+
+已有实验计划（来自工作流 1 或自己写的）？`/experiment-bridge` 一键搞定：
+
+1. 📋 **解析**实验计划（`refine-logs/EXPERIMENT_PLAN.md`）
+2. 💻 **实现**实验脚本（复用已有代码，加 argparse/logging/seed）
+3. ✅ **Sanity check** — 先跑最小实验，提前发现 bug
+4. 🚀 **部署**完整实验到 GPU（`/run-experiment`）
+5. 📊 **收集**初始结果，更新实验 tracker
+
+**涉及 Skills：** `experiment-bridge` + `run-experiment` + `monitor-experiment`
+
+> 💡 **一键调用：** `/experiment-bridge` 自动读取 `refine-logs/EXPERIMENT_PLAN.md`。也可指定：`/experiment-bridge "my_plan.md"`。
+
+> ⚙️ `AUTO_DEPLOY`、`SANITY_FIRST`、`MAX_PARALLEL_RUNS` 均可配置——见[自定义](#%EF%B8%8F-自定义)。
+
 ### 工作流 2：自动科研循环 🔁（睡一觉醒来看结果）
 
 > "帮我 review 论文，修复问题，循环到通过为止。"
@@ -349,7 +368,7 @@ NARRATIVE_REPORT.md ──► /paper-plan ──► /paper-figure ──► /pap
 
 | Skill | 功能 | Codex MCP？ |
 |-------|------|:---:|
-| 🏗️ [`research-pipeline`](skills/research-pipeline/SKILL.md) | **端到端**：工作流 1 → 工作流 2 → 工作流 3，从研究方向到投稿 | 是 |
+| 🏗️ [`research-pipeline`](skills/research-pipeline/SKILL.md) | **端到端**：工作流 1 → 1.5 → 2 → 3，从研究方向到投稿 | 是 |
 
 ### 🔍 工作流 1：Idea 发现与方案精炼
 
